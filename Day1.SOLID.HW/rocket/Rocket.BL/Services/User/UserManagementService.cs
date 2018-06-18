@@ -12,8 +12,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Security.Claims;
 using System.Threading.Tasks;
+using Rocket.BL.Properties;
 
 namespace Rocket.BL.Services.User
 {
@@ -77,6 +77,18 @@ namespace Rocket.BL.Services.User
         }
 
         /// <summary>
+        /// Возвращает пользователя с заданным именем.
+        /// </summary>
+        /// <param name="name">Имя пользователя.</param>
+        /// <returns>Экземпляр пользователя.</returns>
+        public async Task<string> GetUserIdByName(string name)
+        {
+            var user = await _usermanager.FindByNameAsync(name).ConfigureAwait(false);
+
+            return user.Id;
+        }
+
+        /// <summary>
         /// Добавляет заданного пользователя в хранилище данных
         /// и возвращает идентификатор добавленного пользователя.
         /// </summary>
@@ -84,35 +96,32 @@ namespace Rocket.BL.Services.User
         /// <returns>Идентификатор пользователя.</returns>
         public async Task<IdentityResult> AddUser(Common.Models.User.User user)
         {
-            //user.AccountLevel = _userAccountLevelService.GetUserAccountLevel(1);
             var dbUser = Mapper.Map<DbUser>(user);
             dbUser.Id = Guid.NewGuid().ToString();
 
-            var DbUserProfile = new DbUserProfile()
+            var dbUserProfile = new DbUserProfile
             {
-                Email = new Collection<DbEmail>()
+                Email = new Collection<DbEmail>
                     {
-                        new DbEmail()
+                        new DbEmail
                         {
-                            Name = "emptyEmail",
+                            Name =Resources.EMPTY_EMAIL_DATA,
                         }
-                    },
+                    }
             };
 
-            dbUser.DbUserProfile = DbUserProfile;
-
-            dbUser.Email = "emptyEmail";
-            dbUser.PhoneNumber = "emptyPhoneNumber";
             dbUser.TwoFactorEnabled = false;
             dbUser.LockoutEnabled = false;
             dbUser.AccessFailedCount = 0;
+            dbUser.DbUserProfile = dbUserProfile;
+            dbUser.UserName = user.AccountLevel.Name;
+            dbUser.Email = Resources.EMPTY_EMAIL_DATA;
+            dbUser.PhoneNumber = Resources.EMPTY_PHONE_DATA;
 
-            var result = await _usermanager.CreateAsync(dbUser)
+            var result = await _usermanager.CreateAsync(dbUser, user.Password)
                 .ConfigureAwait(false);
 
             return result;
-
-            throw new InvalidOperationException(result.Errors.Aggregate((a, b) => $"{a} {b}"));
         }
 
         /// <summary>
@@ -177,7 +186,7 @@ namespace Rocket.BL.Services.User
         public string CreateConfirmationLink(Common.Models.User.User user)
         {
             // todo надо сделать реализацию, после того, как "прорастут" вьюхи.
-            return string.Empty;
+            throw new NotImplementedException();
         }
     }
 }

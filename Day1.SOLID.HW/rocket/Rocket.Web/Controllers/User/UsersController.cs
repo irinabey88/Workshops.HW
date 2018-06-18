@@ -21,17 +21,11 @@ namespace Rocket.Web.Controllers.User
     [RoutePrefix("users")]
     public class UsersController : ApiController
     {
-        private readonly RocketUserManager _rocketUserManagerService;
-        private readonly RockeRoleManager _rolemanager;
         private readonly IUserManagementService _userManagementService;
 
-        public UsersController(
-            RocketUserManager rocketUserManagerService, RockeRoleManager rolemanager, IUserManagementService userNativeManagementService)
+        public UsersController(IUserManagementService userNativeManagementService)
         {
-            _rocketUserManagerService = rocketUserManagerService;
-            _rolemanager = rolemanager;
-            _userManagementService = userNativeManagementService;
-
+            _userManagementService = userNativeManagementService ?? throw new ArgumentNullException(nameof(userNativeManagementService));
         }
 
         /// <summary>
@@ -40,9 +34,13 @@ namespace Rocket.Web.Controllers.User
         /// <returns>Все пользователи хранилища данных.</returns>
         [HttpGet]
         [Route("all")]
+        [SwaggerResponseRemoveDefaults]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
+        [SwaggerResponse(HttpStatusCode.OK, "List of users", typeof(ICollection<BL.Common.Models.User.User>))]
         public IHttpActionResult GetAllUsers()
         {
             var users = _userManagementService.GetAllUsers();
+
 
             if (users == null)
             {
@@ -60,6 +58,9 @@ namespace Rocket.Web.Controllers.User
         /// <returns>Коллекция пользователей для пейджинга.</returns>
         [HttpGet]
         [Route("new/page_{pageNumber:int:min(1)}")]
+        [SwaggerResponseRemoveDefaults]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
+        [SwaggerResponse(HttpStatusCode.OK, "List of users", typeof(ICollection<BL.Common.Models.User.User>))]
         public IHttpActionResult GetUsersPage(int pageNumber, int pageSize = 5)
         {
             var users = _userManagementService.GetUsersPage(pageSize, pageNumber);
@@ -79,10 +80,13 @@ namespace Rocket.Web.Controllers.User
         /// <param name="id">Уникальный идентификатор пользователя.</param>
         /// <returns>Пользователь хранилища.</returns>
         [HttpGet]
-        [Route("{id:int:min(1)}")]
-        public IHttpActionResult GetUserById(string id)
+        [Route("{id}")]
+        [SwaggerResponseRemoveDefaults]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
+        [SwaggerResponse(HttpStatusCode.OK, "User", typeof(BL.Common.Models.User.User))]
+        public async Task<IHttpActionResult> GetUserById(string id)
         {
-            var user = _userManagementService.GetUser(id);
+            var user = await _userManagementService.GetUser(id);
 
             return user == null ? (IHttpActionResult)NotFound() : Ok(user);
         }
@@ -96,86 +100,17 @@ namespace Rocket.Web.Controllers.User
         [Route("add")]
         [SwaggerResponseRemoveDefaults]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Model is not valid", typeof(string))]
-        [SwaggerResponse(HttpStatusCode.Created, "New model description", typeof(BL.Common.Models.User.User))]
+        [SwaggerResponse(HttpStatusCode.OK, "New model description", typeof(BL.Common.Models.User.User))]
         public async Task<IHttpActionResult> AddUser([FromBody] BL.Common.Models.User.User user)
         {
-            //if (user == null)
-            //{
-            //    return BadRequest("User can not be empty");
-            //}
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Model is not valid");
+            }
 
-            //var result =  _userManagementService.AddUser(user);
+            await _userManagementService.AddUser(user);               
 
-            //if (result.IsCompleted)
-            //{
-            //    var userId = await result;
-            //    return Ok(userId);
-            //}
-            //var dbUser = Mapper.Map<DbUser>(user);
-
-            //var dbUserProfile = new DbUserProfile()
-            //{
-            //    Email = new Collection<DbEmail>()
-            //        {
-            //            new DbEmail()
-            //            {
-            //                Name = "",
-            //            }
-            //        },
-            //};
-
-            //dbUser.DbUserProfile = dbUserProfile;
-
-            await _rocketUserManagerService.CreateAsync(
-                new DbUser()
-                {
-                    Email = user.Login,
-                    UserName = user.Login,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    DbUserProfile = new DbUserProfile()
-                    {
-                        Email = new List<DbEmail>()
-                        {
-                            new DbEmail()
-                            {
-                                Name = user.Login
-                            }
-                        }
-                    }
-                },
-                user.Password).ConfigureAwait(false);
-
-            return Ok();
-
-            //var result = await _rocketUserManagerService.FindByNameAsync(user.Login).ConfigureAwait(false);
-
-            //if (result != null)
-            //{
-            //    return BadRequest("User exists");
-            //}
-
-            //var dbRole = await _rolemanager.FindByNameAsync("administrator").ConfigureAwait(false);
-            //var dbUserProfile = new DbUserProfile()
-            //{
-            //    Email = new Collection<DbEmail>()
-            //        {
-            //            new DbEmail()
-            //            {
-            //                Name = "emptyEmail",
-            //            }
-            //        },
-            //};
-
-            //var dbUser = Mapper.Map<DbUser>(user);
-            //dbUser.DbUserProfile = dbUserProfile;
-
-            //await _rocketUserManagerService.CreateAsync(dbUser).ConfigureAwait(false);
-
-            //await _rocketUserManagerService
-            //    .AddToRoleAsync(dbUser.Id, "user").ConfigureAwait(false);
-
-            //return Ok();
+            return Ok(user);            
         }
 
         /// <summary>
@@ -185,8 +120,16 @@ namespace Rocket.Web.Controllers.User
         /// <returns>Сведения об обновлении пользователя.</returns>
         [HttpPut]
         [Route("update")]
+        [SwaggerResponseRemoveDefaults]
+        [SwaggerResponse(HttpStatusCode.BadRequest, "Model is not valid", typeof(string))]
+        [SwaggerResponse(HttpStatusCode.NoContent)]
         public IHttpActionResult UpdateUser([FromBody]BL.Common.Models.User.User user)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             _userManagementService.UpdateUser(user);
 
             return new StatusCodeResult(HttpStatusCode.NoContent, Request);
@@ -199,7 +142,10 @@ namespace Rocket.Web.Controllers.User
         /// <param name="id">Уникальный идентификатор пользователя.</param>
         /// <returns>Сведения об удалении.</returns>
         [HttpDelete]
-        [Route("{id:int:min(1)}")]
+        [Route("{id}")]
+        [SwaggerResponseRemoveDefaults]
+        [SwaggerResponse(HttpStatusCode.BadRequest, "User id invalid", typeof(string))]
+        [SwaggerResponse(HttpStatusCode.OK)]
         public IHttpActionResult DeleteUserById(string id)
         {
             var usersCount = _userManagementService.GetAllUsers().Count;
@@ -220,6 +166,9 @@ namespace Rocket.Web.Controllers.User
         /// <param name="user">Экземпляр пользователя.</param>
         /// <returns>Сведения об удалении.</returns>
         [HttpDelete]
+        [SwaggerResponseRemoveDefaults]
+        [SwaggerResponse(HttpStatusCode.BadRequest, "User id invalid", typeof(string))]
+        [SwaggerResponse(HttpStatusCode.OK)]
         public IHttpActionResult DeleteUserByModel([FromBody]BL.Common.Models.User.User user)
         {
             var usersLogin = user.Login;
@@ -232,8 +181,6 @@ namespace Rocket.Web.Controllers.User
             _userManagementService.DeleteUser(user.Id);
 
             return Ok($"User with id = {user.Id} successfully deleted");
-
-            throw new NotImplementedException();
         }
     }
 }

@@ -19,6 +19,9 @@ namespace Rocket.Web.Controllers.PersonalArea
 
         [HttpGet]
         [Route("genres/all/music")]
+        [SwaggerResponseRemoveDefaults]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
+        [SwaggerResponse(HttpStatusCode.OK)]
         public IHttpActionResult GetAllMusicGenres()
         {
            var musicGenres = _genreManager.GetAllMusicGenres();
@@ -27,6 +30,9 @@ namespace Rocket.Web.Controllers.PersonalArea
 
         [HttpGet]
         [Route("genres/all/tv")]
+        [SwaggerResponseRemoveDefaults]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
+        [SwaggerResponse(HttpStatusCode.OK)]
         public IHttpActionResult GetAllTvGenres()
         {
             var tvGenres = _genreManager.GetAllTvGenres();
@@ -37,6 +43,7 @@ namespace Rocket.Web.Controllers.PersonalArea
         [Route("personal/genres/music/add")]
         [SwaggerResponseRemoveDefaults]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Genre is not valid", typeof(string))]
+        [SwaggerResponse(HttpStatusCode.NoContent)]
         public IHttpActionResult SaveMusicGenre(string genre)
         {
             if (string.IsNullOrWhiteSpace(genre))
@@ -60,6 +67,7 @@ namespace Rocket.Web.Controllers.PersonalArea
         [Route("personal/genres/music/delete")]
         [SwaggerResponseRemoveDefaults]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Genre is not valid", typeof(string))]
+        [SwaggerResponse(HttpStatusCode.NoContent)]
         public IHttpActionResult DeleteMusicGenre(string genre)
         {
             if (string.IsNullOrWhiteSpace(genre))
@@ -83,6 +91,7 @@ namespace Rocket.Web.Controllers.PersonalArea
         [Route("personal/genres/tv/add")]
         [SwaggerResponseRemoveDefaults]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Genre is not valid", typeof(string))]
+        [SwaggerResponse(HttpStatusCode.NoContent)]
         public IHttpActionResult SaveTvGenre(string genre)
         {
             if (string.IsNullOrWhiteSpace(genre))
@@ -106,6 +115,7 @@ namespace Rocket.Web.Controllers.PersonalArea
         [Route("personal/genres/tv/delete")]
         [SwaggerResponseRemoveDefaults]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Genre is not valid", typeof(string))]
+        [SwaggerResponse(HttpStatusCode.NoContent)]
         public IHttpActionResult DeleteTvGenre(string id, string genre)
         {
             if (string.IsNullOrWhiteSpace(genre))

@@ -61,6 +61,15 @@ namespace Rocket.BL.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 4096.
+        /// </summary>
+        internal static string Buffersize {
+            get {
+                return ResourceManager.GetString("Buffersize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 3.
         /// </summary>
         internal static string Confirmation {
@@ -84,6 +93,24 @@ namespace Rocket.BL.Properties {
         internal static string EmailDuplicate {
             get {
                 return ResourceManager.GetString("EmailDuplicate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;emptyEmail&quot;.
+        /// </summary>
+        internal static string EMPTY_EMAIL_DATA {
+            get {
+                return ResourceManager.GetString("EMPTY_EMAIL_DATA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;emptyPhoneNumber&quot;.
+        /// </summary>
+        internal static string EMPTY_PHONE_DATA {
+            get {
+                return ResourceManager.GetString("EMPTY_PHONE_DATA", resourceCulture);
             }
         }
         
@@ -142,6 +169,15 @@ namespace Rocket.BL.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &quot;&quot;~/App_Data/Logs/2018-06-08.log&quot;&quot;.
+        /// </summary>
+        internal static string LogsPath {
+            get {
+                return ResourceManager.GetString("LogsPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 4.
         /// </summary>
         internal static string Music {
@@ -156,6 +192,15 @@ namespace Rocket.BL.Properties {
         internal static string Premium {
             get {
                 return ResourceManager.GetString("Premium", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 20.
+        /// </summary>
+        internal static string RowToRead {
+            get {
+                return ResourceManager.GetString("RowToRead", resourceCulture);
             }
         }
         

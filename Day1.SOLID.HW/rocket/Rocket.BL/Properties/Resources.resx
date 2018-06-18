@@ -201,4 +201,19 @@
   <data name="InvalidUserId" xml:space="preserve">
     <value>"User with that Id was not found"</value>
   </data>
+  <data name="EMPTY_EMAIL_DATA" xml:space="preserve">
+    <value>"emptyEmail"</value>
+  </data>
+  <data name="EMPTY_PHONE_DATA" xml:space="preserve">
+    <value>"emptyPhoneNumber"</value>
+  </data>
+  <data name="LogsPath" xml:space="preserve">
+    <value>""~/App_Data/Logs/2018-06-08.log""</value>
+  </data>
+  <data name="Buffersize" xml:space="preserve">
+    <value>4096</value>
+  </data>
+  <data name="RowToRead" xml:space="preserve">
+    <value>20</value>
+  </data>
 </root>

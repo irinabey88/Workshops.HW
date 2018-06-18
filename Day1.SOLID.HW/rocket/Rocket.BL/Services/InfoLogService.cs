@@ -4,23 +4,30 @@ using System.Linq;
 using System.Text;
 using System.Web.Hosting;
 using Rocket.BL.Common.Services;
+using Rocket.BL.Properties;
 
 namespace Rocket.BL.Services
 {
     public class InfoLogService : ILogService
     {
-        // количество байт для буфера
-        private const int СountBytes = 4096;
-
         /// <summary>
         /// Получить последних N строк из логгера
         /// </summary>
         /// <returns> string </returns>
         public string GetLogInfo() // todo MP подумать чтобы передать дату файла вместо =string path=, =int count=
         {
-            const int count = 20; // количество последних записей
+            int count; // количество последних записей   
+            int СountBytes;
+            if (!int.TryParse(Resources.Buffersize, out СountBytes))
+            {
+                throw new InvalidCastException(nameof(Resources.Buffersize));
+            }
+            if (!int.TryParse(Resources.RowToRead, out count))
+            {
+                throw new InvalidCastException(nameof(Resources.Buffersize));
+            }
 
-            var path = HostingEnvironment.MapPath("~/App_Data/Logs/2018-06-08.log");
+            var path = HostingEnvironment.MapPath(Resources.LogsPath);
             var resultString = string.Empty;
 
             if (string.IsNullOrWhiteSpace(path) || !File.Exists(path) || count <= 0)

@@ -1,19 +1,37 @@
-﻿namespace Rocket.BL.Common.Services
+﻿using System;
+using System.Collections.Generic;
+using Rocket.BL.Common.Models.UserRoles;
+
+namespace Rocket.BL.Common.Services
 {
-    public interface IPermissionService
+    public interface IPermissionService : IDisposable
     {
         /// <summary>
-        /// Добавить существующую функц возможность для выбранной роли
+        /// Добавляет пермишен
         /// </summary>
-        /// <param name="idRole"> ID role </param>
-        /// <param name="idPermission"> ID permission </param>
-        void AddPermissionToRole(string idRole, int idPermission);
+        /// <param name="permission">Пермишен</param>
+        /// <param name="user"></param>
+        void Insert(Permission permission, string user);
 
         /// <summary>
-        /// Удалить функц возможность из текущего списка у роли
+        /// Удаляет пермишен
         /// </summary>
-        /// <param name="idRole"> ID role </param>
-        /// <param name="idPermission"> ID permission </param>
-        void RemovePermissionFromRole(string idRole, int idPermission);
+        /// <param name="id">Идентификатор пермишена</param>
+        /// <param name="user"></param>
+        void Delete(Permission permission, string user);
+
+        /// <summary>
+        /// Возвращает пермишены роли, нужно для UI
+        /// </summary>
+        /// <param name="idUser">Идентификатор пользователя</param>
+        /// <returns>Коллекцию Permission</returns>
+        IEnumerable<Permission> GetPermissionByUser(string idUser);
+
+
+        /// <summary>
+        /// Возвращает пермишены роли, нужно для UI
+        /// </summary>
+        /// <returns>Коллекцию Permission</returns>
+        IEnumerable<Permission> GetAllPermissions();
     }
 }

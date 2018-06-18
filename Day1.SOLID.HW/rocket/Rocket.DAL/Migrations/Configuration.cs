@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Rocket.DAL.Common.DbModels.Identity;
 using Rocket.DAL.Common.DbModels.ReleaseList;
 using Rocket.DAL.Common.DbModels.User;
 using Rocket.DAL.Migrations.InitialDataCreators.User;
+using Rocket.DAL.Migrations.InitialDataCreators.User.FakeData;
 using Rocket.DAL.Migrations.InitialDataCreators.UserRole;
 
 namespace Rocket.DAL.Migrations
@@ -24,7 +26,14 @@ namespace Rocket.DAL.Migrations
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method
             //  to avoid creating duplicate seed data.
 
-            //todo insert fake users data here...
+            // Добавление в репозиторий первоначальной тестовой информации о пользователей.
+            if (!context.Users.Any())
+            {
+                var initialUserdatas = new FakeDbUsersCreator().Users;
+
+                initialUserdatas.ForEach(user => context.Users.Add(user));
+                context.SaveChanges();
+            }
 
             // Добавление в репозиторий первоначальной информации о половой принадлежности пользователя.
             List<DbGender> initialGenderDatas = new DbGendersCreator().Items.ToList();
@@ -42,13 +51,7 @@ namespace Rocket.DAL.Migrations
                 context.SaveChanges();
             }
 
-            // Добавление в репозиторий первоначальной информации об уровне аккаунта пользователей.
-            List<DbAccountLevel> initialAccountLevelDatas = new DbAccountLevelsCreator().Items;
-            if (!context.DbAccountLevels.Any())
-            {
-                context.DbAccountLevels.AddRange(initialAccountLevelDatas);
-                context.SaveChanges();
-            }
+            CreateFakeUser(context);
 
             // Добавление в репозиторий первоначальной информации о странах мира (всего 251 наименование стран взято из международного
             // классификатора ISO).
@@ -77,20 +80,25 @@ namespace Rocket.DAL.Migrations
 
             // Добавление в репозиторий первоначальной информации о ролях пользователей.
             List<DbRole> initialRolesDatas = new DbUserRolesCreator().Items;
-            //if (!context.DbRoles.Any())
-            //{
-            //    context.DbRoles.AddRange(initialRolesDatas);
-            //    context.SaveChanges();
-            //}
+        }
 
-            //// Добавление в репозиторий первоначальной тестовой информации о пользователей.
-            //if (!context.Users.Any())
-            //{
-            //    var initialUserdatas = new FakeDbUsersCreator().Users;
+        [Conditional("DEBUG")]
+        private void CreateFakeUser(Rocket.DAL.Context.RocketContext context)
+        {
+            var initialUserdatas = new FakeDbUsersCreator().Users;
 
-            //    initialUserdatas.ForEach(user => context.Users.Add(user));
-            //    context.SaveChanges();
-            //}
+            if (!context.Users.Any())
+            {
+                initialUserdatas.ForEach(user => context.Users.Add(user));
+            context.SaveChanges();
+            }
+
+            if (!context.Roles.Any())
+            {
+                List<DbRole> initialRolesDatas = new FakeDbRolesCreator().Roles;
+                initialRolesDatas.ForEach(role => context.Roles.Add(role));
+            }
         }
     }
 }
+

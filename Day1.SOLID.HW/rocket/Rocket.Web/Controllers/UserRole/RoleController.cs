@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
 using Rocket.BL.Common.Models.UserRoles;
-using Rocket.BL.Services.UserServices;
+using Rocket.BL.Common.Services;
 using Swashbuckle.Swagger.Annotations;
 
 namespace Rocket.Web.Controllers.UserRole
@@ -12,9 +12,9 @@ namespace Rocket.Web.Controllers.UserRole
     [RoutePrefix("roles")]
     public class RoleController : ApiController
     {
-        private readonly RoleService _roleManager;
+        private readonly IRoleService _roleManager;
 
-        public RoleController(RoleService roleManager)
+        public RoleController(IRoleService roleManager)
         {
             _roleManager = roleManager;
         }
@@ -36,6 +36,11 @@ namespace Rocket.Web.Controllers.UserRole
         [SwaggerResponse(HttpStatusCode.OK)]
         public async Task<IHttpActionResult> GetRoleById(string id)
         {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return BadRequest("Incorrect id value");
+            }
+
             var model = await _roleManager.GetById(id);
             return model == null ? (IHttpActionResult)NotFound() : Ok(model.Name);
         }
@@ -47,7 +52,7 @@ namespace Rocket.Web.Controllers.UserRole
         [SwaggerResponse(HttpStatusCode.Created, "New Role description", typeof(Role))]
         public async Task<IHttpActionResult> SaveRole(string roleName)
         {
-            if (roleName == null)
+            if (string.IsNullOrWhiteSpace(roleName))
             {
                 return BadRequest("Model cannot be empty");
             }
@@ -65,6 +70,11 @@ namespace Rocket.Web.Controllers.UserRole
         [SwaggerResponse(HttpStatusCode.BadRequest, "Data is not valid", typeof(string))]
         public async Task<IHttpActionResult> UpdateRole(string roleId, string roleName)
         {
+            if (string.IsNullOrWhiteSpace(roleId) || string.IsNullOrWhiteSpace(roleName))
+            {
+                return BadRequest("Invalid input data");
+            }
+
             var model = await _roleManager.GetById(roleId);
 
             if (model == null)
@@ -84,6 +94,11 @@ namespace Rocket.Web.Controllers.UserRole
         [SwaggerResponse(HttpStatusCode.BadRequest, "Data is not valid", typeof(string))]
         public async Task<IHttpActionResult> DeleteRoleById(string roleId)
         {
+            if (string.IsNullOrWhiteSpace(roleId))
+            {
+                return BadRequest("Invalid input data");
+            }
+
             var model = await _roleManager.GetById(roleId);
 
             if (model == null)

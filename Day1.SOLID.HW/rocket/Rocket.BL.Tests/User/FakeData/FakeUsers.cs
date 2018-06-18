@@ -35,22 +35,21 @@ namespace Rocket.BL.Tests.User.FakeData
         public FakeUsers(int usersCount, bool isFirstNameNullOrEmpty, bool isLastNameNullOrEmpty,
             bool isLoginNullOrEmpty, bool isPasswordNullOrEmpty, int minLoginLenght, int minPasswordLenght)
         {
-            //var result = new Faker<Common.Models.User.User>()
-            //    .RuleFor(p => p.Id, f => f.IndexFaker)
-            //    .RuleFor(p => p.AccountStatus,
-            //        f => f.PickRandomParam(new FakeAccountStatuses(5).AccountStatuses.ToArray()))
-            //    .RuleFor(p => p.AccountLevel, f => f.PickRandomParam(new FakeAccountLevels(5).AccountLevels.ToArray()))
-            //    .RuleFor(p => p.Roles, f => { return new FakeRoles(new Random().Next(1, 5)).Roles; })
-            //    .RuleFor(p => p.FirstName, f => { return isFirstNameNullOrEmpty ? string.Empty : f.Person.FirstName; })
-            //    .RuleFor(p => p.LastName, f => { return isLastNameNullOrEmpty ? string.Empty : f.Person.LastName; })
-            //    .RuleFor(p => p.Login,
-            //        f => { return isLoginNullOrEmpty ? string.Empty : f.Lorem.Letter(minLoginLenght); })
-            //    .RuleFor(p => p.Password,
-            //        f => { return isPasswordNullOrEmpty ? string.Empty : f.Lorem.Letter(minPasswordLenght); })
-            //    .RuleFor(p => p.UserDetail, f => { return new FakeUserDetails(1).UserDetails[0]; });
+            var result = new Faker<Common.Models.User.User>()
+                .RuleFor(p => p.Id, f => f.IndexFaker.ToString())
+                .RuleFor(p => p.AccountStatus,
+                    f => f.PickRandomParam(new FakeAccountStatuses(5).AccountStatuses.ToArray()))
+                .RuleFor(p => p.AccountLevel, f => f.PickRandomParam(new FakeAccountLevels(5).AccountLevels.ToArray()))
+                .RuleFor(p => p.Roles, f => { return new FakeRoles(new Random().Next(1, 5)).Roles; })
+                .RuleFor(p => p.FirstName, f => { return isFirstNameNullOrEmpty ? string.Empty : f.Person.FirstName; })
+                .RuleFor(p => p.LastName, f => { return isLastNameNullOrEmpty ? string.Empty : f.Person.LastName; })
+                .RuleFor(p => p.Login,
+                    f => { return isLoginNullOrEmpty ? string.Empty : f.Lorem.Letter(minLoginLenght); })
+                .RuleFor(p => p.Password,
+                    f => { return isPasswordNullOrEmpty ? string.Empty : f.Lorem.Letter(minPasswordLenght); })
+                .RuleFor(p => p.UserDetail, f => { return new FakeUserDetails(1).UserDetails[0]; });
 
-            throw new NotImplementedException();
-            //Users = result.Generate(usersCount);
+            Users = result.Generate(usersCount);
 
         }
     }

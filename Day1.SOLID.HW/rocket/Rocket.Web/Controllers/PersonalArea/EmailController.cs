@@ -49,6 +49,7 @@ namespace Rocket.Web.Controllers.PersonalArea
         [HttpDelete]
         [Route("delete/{id:int:min(1)}")]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Id is not valid", typeof(string))]
+        [SwaggerResponse(HttpStatusCode.NoContent)]
         public IHttpActionResult DeleteEmail(int id)
         {
             try

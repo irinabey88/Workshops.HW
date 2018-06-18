@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
+using Rocket.BL.Common.Models.UserRoles;
 using Rocket.DAL.Common.DbModels.Identity;
 
 namespace Rocket.BL.Common.Services
@@ -21,7 +22,7 @@ namespace Rocket.BL.Common.Services
         /// </summary>
         /// <param name="userId"> Идентификатор ползователя. </param>
         /// <returns>list</returns>
-        IEnumerable<DbRole> GetRoles(string userId);
+        Task<IEnumerable<string>> GetRoles(string userId);
 
         /// <summary>
         /// Проверка что у юзера есть соответствующая роль
@@ -29,7 +30,7 @@ namespace Rocket.BL.Common.Services
         /// <param name="userId"> Идентификатор ползователя. </param>
         /// <param name="roleId"> Идентификатор ролию </param>
         /// <returns>bool</returns>
-        bool IsInRole(string userId, string roleId);
+        Task<bool> IsInRole(string userId, string roleId);
 
         /// <summary>
         /// Удалить роль у юзера

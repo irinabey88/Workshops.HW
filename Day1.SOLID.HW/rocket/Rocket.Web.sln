@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rocket.Web", "Rocket.Web\Rocket.Web.csproj", "{1AAFA5B0-FBE9-4AB4-A16D-24BECDD34AAE}"
 EndProject
@@ -55,9 +55,11 @@ Global
 		{67C097CC-75DA-45AD-95D9-595CCF0A1063}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67C097CC-75DA-45AD-95D9-595CCF0A1063}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C879595F-FD0D-44E2-AE11-9296C3282132}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C879595F-FD0D-44E2-AE11-9296C3282132}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C879595F-FD0D-44E2-AE11-9296C3282132}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C879595F-FD0D-44E2-AE11-9296C3282132}.Release|Any CPU.Build.0 = Release|Any CPU
 		{26CAF4C2-6ECA-4533-A965-4B9CB4698B1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26CAF4C2-6ECA-4533-A965-4B9CB4698B1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26CAF4C2-6ECA-4533-A965-4B9CB4698B1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26CAF4C2-6ECA-4533-A965-4B9CB4698B1F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7B49087B-5612-4EB5-94B7-EF6D03CF4E7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

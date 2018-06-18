@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Web.Http;
 using Rocket.BL.Common.Services;
 using Swashbuckle.Swagger.Annotations;
@@ -11,7 +12,7 @@ namespace Rocket.Web.Controllers
 
         public LoggerController(ILogService logService)
         {
-            _logService = logService;
+            _logService = logService ?? throw new ArgumentNullException(nameof(logService));
         }
 
         [HttpGet]
