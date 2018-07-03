@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryLeak", "MemoryLeak\MemoryLeak.csproj", "{24104687-BEE2-4090-B1AD-62581E28E8D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryLeakSinglton", "MemoryLeakSinglton\MemoryLeakSinglton.csproj", "{FFE09EDD-BC4A-4DAC-972C-61AFFB6CD832}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{24104687-BEE2-4090-B1AD-62581E28E8D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24104687-BEE2-4090-B1AD-62581E28E8D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24104687-BEE2-4090-B1AD-62581E28E8D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24104687-BEE2-4090-B1AD-62581E28E8D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFE09EDD-BC4A-4DAC-972C-61AFFB6CD832}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFE09EDD-BC4A-4DAC-972C-61AFFB6CD832}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFE09EDD-BC4A-4DAC-972C-61AFFB6CD832}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFE09EDD-BC4A-4DAC-972C-61AFFB6CD832}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7DBE94FD-FA12-44F2-9B15-4DE2F32F261A}
+	EndGlobalSection
+EndGlobal
